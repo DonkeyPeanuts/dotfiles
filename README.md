@@ -1,2 +1,2 @@
 # dotfiles
-vim, bash, screen, zsh, tmux
+dotfiles for vim, bash, screen, zsh, tmux
