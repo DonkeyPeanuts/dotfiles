@@ -1,0 +1,103 @@
+# ~/suehiro/.vim/.dein.toml
+
+# utilities
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+build = 'make'
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+
+[[plugins]]
+repo = 'Shougo/vimshell'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'CoatiSoftware/vim-sourcetrail'
+
+[[plugins]]
+repo = 'kien/ctrlp.vim'
+
+[[plugins]]
+repo = 'simeji/winresizer'
+
+[[plugins]]
+repo = 'kassio/neoterm'
+
+[[plugins]]
+repo = 'osyo-manga/vim-precious'
+depends = ['context_filetype.vim']
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repo = 'machakann/vim-highlightedyank'
+
+[[plugins]]
+repo = 'junegunn/vim-peekaboo'
+
+[[plugins]]
+repo = 'mhinz/vim-signify'
+
+[[plugins]]
+repo = 'CoatiSoftware/vim-sourcetrail'
+
+
+# editing
+[[plugins]]
+repo    = 'vim-airline/vim-airline'
+depends = ['vim-airline-themes']
+
+[[plugins]]
+repo = 'vim-airline/vim-airline-themes'
+
+[[plugins]]
+repo = 'editorconfig/editorconfig-vim'
+
+[[plugins]]
+repo = 'tpope/vim-commentary'
+
+[[plugins]]
+repo = 'machakann/vim-sandwich'
+
+
+# completion and linting
+[[plugins]]
+repo = 'SirVer/ultisnips'
+
+[[plugins]]
+repo = 'honza/vim-snippets'
+
+[[plugins]]
+repo = 'junegunn/fzf'
+merged = 0
+
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+merged = 0
+
+[[plugins]]
+repo = 'Valloric/YouCompleteMe'
+merged = 0
+
+[[plugins]]
+repo = 'rdnetto/YCM-generator'
+rev = 'stable'
+on_cmd = ['YcmGenerateConfig', 'CCGenerateConfig']
+
+
+# colorschemes
+[[plugins]]
+repo = 'tomasr/molokai'
+
+[[plugins]]
+repo = 'morhetz/gruvbox'
+
+[[plugins]]
+repo = 'crusoexia/vim-monokai'
