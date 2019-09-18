@@ -45,7 +45,7 @@ if dein#load_state(s:dein_dir)
     call dein#save_state()
 endif
 
-f dein#tap('deoplete.nvim')
+if dein#tap('deoplete.nvim')
   let g:deoplete#enable_at_startup = 1
 elseif dein#tap('neocomplete.vim')
   let g:neocomplete#enable_at_startup = 1
@@ -55,7 +55,7 @@ if dein#check_install()
     call dein#install()
 endif
 
-f !has('nvim')
+if !has('nvim')
   packadd! matchit
   runtime ftplugin/man.vim
 endif
@@ -81,6 +81,7 @@ endif
 
 
 
+"色
 "colorschemeの微調整
 "colorschemeより前に書く
 autocmd ColorScheme * highlight Comment ctermfg=245
@@ -100,7 +101,6 @@ if s:color_level >=? 1
 endif
 
 
-"色
 
 "indentline unset expandtab
 "tab、indentの可視化
@@ -134,7 +134,7 @@ set shiftwidth=4
 set softtabstop=4
 
 "tabを含むファイルを開いた時のtabの幅
-set tabstop=2
+set tabstop=4
 
 "対応する括弧の非表示
 set noshowmatch

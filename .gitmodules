@@ -23,3 +23,12 @@
 	path = home/.local/opt/tilix-gruvbox
 	url = https://github.com/MichaelThessel/tilix-gruvbox.git
 	ignore = all
+[submodule "home/.local/share/zsh/plugins/cf-zsh-autocomplete-plugin"]
+	path = home/.local/share/zsh/plugins/cf-zsh-autocomplete-plugin
+	url = https://github.com/Dannyzen/cf-zsh-autocomplete-plugin.git
+[submodule "home/.local/share/zsh/plugins/zsh-completions"]
+	path = home/.local/share/zsh/plugins/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions.git
+[submodule "home/.local/share/zsh/plugins/zsh-syntax-highlighting"]
+	path = home/.local/share/zsh/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
