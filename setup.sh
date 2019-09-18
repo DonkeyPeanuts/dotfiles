@@ -43,14 +43,6 @@ source "$DOTFILE_DIR/scripts/setup"
   - .config/tig/config
   - .local/bin/git-fancy
 
-@install Install GPG Config
-  - shell: install -d -m 700 ~/.gnupg
-  - chmod: 700 .gnupg
-  - chmod: 600 .gnupg/gpg.conf
-  - chmod: 600 .gnupg/gpg-agent.conf
-  - .gnupg/gpg.conf
-  - .gnupg/gpg-agent.conf
-
 @install Install GDB Config
   - .gdbinit
   - .local/bin/gef
@@ -87,9 +79,4 @@ source "$DOTFILE_DIR/scripts/setup"
 # Will not run unless --install-deps is specified
 @packages
   - skip: "${SKIP_PACKAGES:-true}"
-  - build-essential
   - cmake
-  - cmigemo
-  - npm
-  - nodejs
-  - script: https://sh.rustup.rs
