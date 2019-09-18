@@ -127,9 +127,9 @@ dot::clean::task() {
 dot::packages::task() {
   if [[ -z "$_DOT_PACKAGE_UPDATED" ]]; then
     _DOT_PACKAGE_UPDATED=true
-    sudo apt-get update
+    sudo yum update
   fi
-  sudo apt-get install -y "$1"
+  sudo yum install -y "$1"
 }
 
 # Skip section

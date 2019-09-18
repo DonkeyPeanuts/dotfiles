@@ -31,13 +31,11 @@ source "$DOTFILE_DIR/scripts/setup"
   - .config/shell/templates
   - .config/shell/templates.csv
   - .local/share/zsh/site-functions
+  - .local/share/zsh/plugins
 
 @install Install Vim Config
   - .vim
   - .config/nvim
-  - download: \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
-      ~/.vim/autoload/plug.vim
 
 @install Install Git Config
   - .config/git/config
@@ -63,14 +61,6 @@ source "$DOTFILE_DIR/scripts/setup"
   - .config/latexmk/latexmkrc
   - .local/bin/platexmk
   - .local/bin/uplatexmk
-
-@install Install Spacemacs Config
-  - github: syl20bnr/spacemacs ~/.emacs.d
-  - .spacemacs
-
-@install Install VSCode Config
-  - shell: install -d -m 700 ~/.config/Code
-  - .config/Code/User/settings.json
 
 @install Install Miscellaneous Config
   - .clang-format
@@ -102,7 +92,4 @@ source "$DOTFILE_DIR/scripts/setup"
   - cmigemo
   - npm
   - nodejs
-  - zsh-syntax-highlighting
-  - shell: sudo ln -s /usr/bin/nodejs /usr/local/bin/node
   - script: https://sh.rustup.rs
-  - shell: vim +PlugInstall +qall
