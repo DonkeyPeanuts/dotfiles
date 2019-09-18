@@ -10,9 +10,12 @@ bindkey -e
 ########################################
 # completion周りの設定
 ########################################
-fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
-if [ -e $(brew --prefix)/share/zsh-completions ]; then
-  fpath=($(brew --prefix)/share/zsh-completions $fpath)
+fpath=(~/.local/share/zsh/site-functions $fpath)
+if [ -e ~/.local/share/zsh/plugins/zsh-completions/src ]; then
+  fpath=(~/.local/share/zsh/plugins/zsh-completions/src $fpath)
+fi
+if [ -e ~/.local/share/zsh/plugins/cf-zsh-autocomplete-plugin ]; then
+  fpath=(~/.local/share/zsh/plugins/cf-zsh-autocomplete-plugin $fpath)
 fi
 
 autoload -Uz compinit
@@ -21,8 +24,6 @@ if [[ -f ~/.zcompdump(#qN.m+1) ]]; then
 else
   compinit -C
 fi
-
-setopt nonomatch
 
 # 補完候補に色つける
 zstyle ':completion:*' list-colors "${LS_COLORS}"
@@ -198,8 +199,8 @@ setopt hist_expire_dups_first
 ########################################
 # shellで<back space>効かないとき用
 if test -t 0; then
-	stty stop undef
-	stty erase "^H"
+    stty stop undef
+    stty erase "^H"
 fi
 
 # 単語の区切り文字を指定する
@@ -240,8 +241,10 @@ setopt no_clobber
 autoload -Uz zrecompile && zrecompile -p -R ~/.zshrc -- -M ~/.zcompdump &!
 autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
 
-source ~/.zsh_plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
+if [ -e ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+    source ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
+fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
