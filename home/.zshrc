@@ -1,252 +1,290 @@
-# 色有効化
-autoload -Uz colors && colors # black red green yellow blue magenta cyan white
-
-# hookの設定
+fpath+=(~/.local/share/zsh/site-functions)
 autoload -Uz add-zsh-hook
+autoload -Uz is-at-least
 
-typeset -U path PATH
+[[ -d ~/.cache/zsh/completion ]] || mkdir -p ~/.cache/zsh/completion
 
-bindkey -e
-########################################
-# completion周りの設定
-########################################
-fpath=(~/.local/share/zsh/site-functions $fpath)
-if [ -e ~/.local/share/zsh/plugins/zsh-completions/src ]; then
-  fpath=(~/.local/share/zsh/plugins/zsh-completions/src $fpath)
-fi
-if [ -e ~/.local/share/zsh/plugins/cf-zsh-autocomplete-plugin ]; then
-  fpath=(~/.local/share/zsh/plugins/cf-zsh-autocomplete-plugin $fpath)
-fi
+###########################
+#  Environment Variables  #
+###########################
+export GEM_HOME="$(ruby -e 'print Gem.user_dir')"
+export GPG_TTY="$TTY"
 
-autoload -Uz compinit
-if [[ -f ~/.zcompdump(#qN.m+1) ]]; then
-  compinit -u
-else
-  compinit -C
-fi
+typeset -U path
+path=(
+  ~/.local/bin
+  $path
+  ~/.cargo/bin
+  "$GEM_HOME/bin"
+  "$(python3 -c 'import site; print(site.getuserbase())')/bin"
+  "$GOPATH/bin"
+  ~/.emacs.d/bin
+)
 
-# 補完候補に色つける
-zstyle ':completion:*' list-colors "${LS_COLORS}"
+###########################
+#  Aliases and Functions  #
+###########################
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias ls='ls -F --color=auto'
+alias ll='ls -lh'
+alias la='ls -lAh'
+autoload -Uz zmv
+autoload -Uz br cud fuck
+autoload -Uz fzf-sel fzf-run fzf-loop fzf-gen
 
-# 補完で小文字でも大文字にマッチさせる
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+#################
+#  Directories  #
+#################
+setopt auto_name_dirs
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushd_minus
 
-# ../ の後は今いるディレクトリを補完しない
-zstyle ':completion:*' ignore-parents parent pwd ..
+autoload -Uz chpwd_recent_dirs cdr
+chpwd_functions=(chpwd_recent_dirs)
+zstyle ':chpwd:*' recent-dirs-default true
+zstyle ':chpwd:*' recent-dirs-max 500
+zstyle ':chpwd:*' recent-dirs-file ~/.cache/zsh/cdhistory
 
-# sudo の後ろでコマンド名を補完する
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
-                   /usr/sbin /usr/bin /sbin /bin
+#############
+#  History  #
+#############
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
 
-# ps コマンドのプロセス名補完
-zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
-
-# 単語の入力途中でもTab補完を有効化
-setopt complete_in_word
-
-# 補完候補をハイライト
-zstyle ':completion:*:default' menu select=1
-
-# キャッシュの利用による補完の高速化
-zstyle ':completion::complete:*' use-cache true
-
-# 補完リストの表示間隔を狭くする
-setopt list_packed
- 
-# コマンドの打ち間違いを指摘してくれる
-setopt correct
-SPROMPT="correct: $RED%R$DEFAULT -> $GREEN%r$DEFAULT ? [Yes/No/Abort/Edit] => "
-
-# 不完全な補完
-setopt always_to_end
-
-# コマンドラインの引数でも補完を有効にする
-setopt magic_equal_subst
-
-# 展開する前に補完候補を出させる
-setopt menu_complete
-
-zmodload -i zsh/complist
-
-########################################
-# prompt周りの設定
-# @TODO 今の所やりたいこと
-# - cvs対応
-# - ssh中のみホスト名表示
-########################################
-# VCSの情報を取得するzsh関数
-autoload -Uz promptinit && promptinit
-autoload -Uz vcs_info
-
-# PROMPT変数内で変数参照
-setopt prompt_subst
-
-zstyle ':vcs_info:git:*' check-for-changes true #formats 設定項目で %c,%u が使用可
-zstyle ':vcs_info:git:*' stagedstr "%F{green}!" #commit されていないファイルがある
-zstyle ':vcs_info:git:*' unstagedstr "%F{magenta}+" #add されていないファイルがある
-zstyle ':vcs_info:*' formats "%F{cyan}%c%u(%b)%f" #通常
-zstyle ':vcs_info:*' actionformats '[%b|%a]' #rebase 途中,merge コンフリクト等 formats 外の表示
-zstyle ':vcs_info:*' enable git cvs
-
-# %b ブランチ情報
-# %a アクション名(mergeなど)
-# %c changes
-# %u uncommit
-
-__update_term() {
-
-  vcs_info
-
-  local user='%n'
-  if [[ -n "$SSH_CONNECTION" ]]; then
-    user='%n@%m'
-  fi
-
-  local left=" %{\e[38;5;4m%}[${user}]${vcs_info_msg_0_}%{\e[m%}"
-
-  local right="%{\e[38;5;3m%}(%~)%{\e[m%}"
-  # スペースの長さを計算
-  # テキストを装飾する場合、エスケープシーケンスをカウントしないようにします
-  local invisible='%([BSUbfksu]|([FK]|){*})'
-  local leftwidth=${#${(S%%)left//$~invisible/}}
-  local rightwidth=${#${(S%%)right//$~invisible/}}
-  local padwidth=$(($COLUMNS - ($leftwidth + $rightwidth) % $COLUMNS))
-
-  # print -P $left${(r:$padwidth:: :)}$right
-  print -P $left$right
-}
-
-add-zsh-hook precmd __update_term
-
-# プロンプト（左）
-PROMPT='$'
-
-# プロンプト（右）
-RPROMPT=$'%{\e[38;5;251m%}%D{%b %d}, %*%{\e[m%}'
-
-########################################
-# alias周りの設定
-# @TODO linuxとmacどちらでも使えるようにする
-########################################
-alias l='ls -tF --color=auto'
-alias ls='ls -tF --color=auto'
-alias ll='ls -ltF --color=auto'
-alias la='ls -atF --color=auto'
-alias lla='ls -altF --color=auto'
-alias lld='ls -altFd --color=auto'
-
-alias df='df -h'
-alias ps='ps --sort=start_time'
-alias sc='screen -D -U -RR'
-alias hn='hostname'
-
-
-alias mv='mv -i'
-alias cp='cp -i'
-alias rm='rm -i'
-
-alias history='history -i'
-
-if type nvim > /dev/null 2>&1; then
-    alias vim='nvim'
-fi
-########################################
-# history共有周りの設定
-########################################
-function history-all { history -E 1 }
-# プロセスを横断してヒストリを共有
-# ヒストリの共有の有効化
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
 setopt share_history
 
-# 直前と同じコマンドをヒストリに追加しない
-setopt hist_ignore_dups
+################
+#  Completion  #
+################
+setopt always_to_end
+setopt complete_in_word
+setopt correct
+setopt magic_equal_subst
+setopt menu_complete
+setopt list_packed
+zmodload -i zsh/complist
 
-# history search
-bindkey '^P' history-beginning-search-backward
-bindkey '^N' history-beginning-search-forward
+() {
+  setopt localoptions extended_glob
+  autoload -Uz compinit
 
-# ヒストリに追加されるコマンド行が古いものと同じなら古いものを削除
-setopt hist_ignore_all_dups
+  zstyle ':completion:*' menu select
+  zstyle ':completion:*' use-cache true
+  zstyle ':completion:*' cache-path ~/.cache/zsh/completion
+  zstyle ':completion:*' list-colors ''
+  zstyle ':completion:*' recent-dirs-insert fallback
+  # case-insensitive (all),partial-word and then substring completion
+  zstyle ':completion:*' matcher-list \
+    'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
-# スペースで始まるコマンド行はヒストリリストから削除
-setopt hist_ignore_space
+  zstyle ':completion:*:functions' ignored-patterns '(_*|prompt_*)'
+  zstyle ':completion:*:manuals' separate-sections true
+  zstyle ':completion:*:manuals.(^1*)' insert-sections true
+  zstyle ':completion:*:*:kill:*:processes' list-colors \
+    '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+  zstyle ':completion:*:*:*:*:processes' \
+    command "ps -u $USER -o pid,user,comm -w -w"
+  zstyle ':completion:*:*:*:users' ignored-patterns '_*'
 
-# ヒストリを呼び出してから実行する間に一旦編集可能
-setopt hist_verify
+  # update the completion cache only once a day
+  if [[ -n ~/.cache/zsh/compdump(#qN.m+1) ]]; then
+    # XXX: ignore compaudit warnings b/c it's pointless for most people
+    compinit -u -d ~/.cache/zsh/compdump && touch ~/.cache/zsh/compdump
+  else
+    compinit -C -d ~/.cache/zsh/compdump # skip compaudit b/c it's slow
+  fi
 
-# 余分な空白は詰めて記録
-setopt hist_reduce_blanks  
+  compdef rcd=ssh
+}
 
-# 古いコマンドと同じものは無視 
-setopt hist_save_no_dups
+# define a completion widget that parses --help output
+zle -C complete-from-help complete-word _generic
+zstyle ':completion:complete-from-help:*' completer _complete _gnu_generic
 
-# historyコマンドは履歴に登録しない
-setopt hist_no_store
+#################
+#  Keybindings  #
+#################
+autoload -Uz copy-earlier-word && zle -N copy-earlier-word
+autoload -Uz edit-command-line && zle -N edit-command-line
+autoload -Uz select-bracketed && zle -N select-bracketed
+autoload -Uz select-quoted && zle -N select-quoted
+autoload -Uz smart-insert-last-word && zle -N smart-insert-last-word
+autoload -Uz vim-pipe && zle -N vim-pipe
+autoload -Uz fzf-completion && zle -N fzf-completion
+autoload -Uz fzf-cd-widget && zle -N fzf-cd-widget
+autoload -Uz fzf-cdr-widget && zle -N fzf-cdr-widget
+autoload -Uz fzf-file-widget && zle -N fzf-file-widget
+autoload -Uz fzf-history-widget && zle -N fzf-history-widget
+autoload -Uz fzf-snippet-expand && zle -N fzf-snippet-expand
+autoload -Uz fzf-snippet-next && zle -N fzf-snippet-next
+autoload -Uz toggle-leading-space && zle -N toggle-leading-space
+autoload -Uz surround \
+  && zle -N delete-surround surround \
+  && zle -N add-surround surround \
+  && zle -N change-surround surround
+autoload -Uz vim-incarg \
+  && zle -N vim-incarg \
+  && zle -N vim-decarg vim-incarg \
+  && zle -N sync-incarg vim-incarg \
+  && zle -N sync-decarg vim-incarg
 
-# 履歴をインクリメンタルに追加
-setopt inc_append_history
-# インクリメンタルからの検索
-bindkey "^R" history-incremental-search-backward
-bindkey "^S" history-incremental-search-forward
+unalias run-help 2>/dev/null
+autoload -Uz run-help run-help-git run-help-ip run-help-openssl run-help-sudo
 
-# history 拡張
-setopt extended_history
+bindkey -v
+bindkey -rv '^[,' '^[/' '^[~'
+bindkey -v \
+  '^A' smart-insert-last-word \
+  '^B' copy-earlier-word \
+  '^E' history-incremental-search-forward \
+  '^Gu' split-undo \
+  '^H' backward-delete-char \
+  '^I' fzf-completion \
+  '^J' fzf-snippet-next \
+  '^N' history-beginning-search-forward \
+  '^O' fzf-cdr-widget \
+  '^P' history-beginning-search-backward \
+  '^T' toggle-leading-space \
+  '^U' backward-kill-line \
+  '^W' backward-kill-word \
+  '^X^F' fzf-file-widget \
+  '^X^J' fzf-snippet-expand \
+  '^X^O' complete-from-help \
+  '^X^R' fzf-history-widget \
+  '^Y' history-incremental-search-backward \
+  '^?' backward-delete-char
+bindkey -ra 's'
+bindkey -a \
+  'gf' fzf-cd-widget \
+  'g^A' sync-incarg \
+  'g^X' sync-decarg \
+  'sa' add-surround \
+  'sd' delete-surround \
+  'sr' change-surround \
+  'K' run-help \
+  '^A' vim-incarg \
+  '^W' edit-command-line \
+  '^X' vim-decarg \
+  '!' vim-pipe
+bindkey -M menuselect \
+  '^B' backward-char \
+  '^E' undo \
+  '^F' forward-char \
+  '^J' accept-and-menu-complete \
+  '^N' down-line-or-history \
+  '^P' up-line-or-history \
+  '^X^F' accept-and-infer-next-history \
+  '^X^X' vi-insert \
+  '^Y' accept-line
 
-setopt hist_expire_dups_first
-########################################
-# その他
-# @TODO 必要になったら編集
-########################################
-# shellで<back space>効かないとき用
-if test -t 0; then
-    stty stop undef
-    stty erase "^H"
-fi
+() {
+  local mode key
+  for mode in visual viopp; do
+    for key in {a,i}${(s..)^:-'()[]{}<>bB'}; do
+      bindkey -M $mode $key select-bracketed
+    done
+    for key in {a,i}{\',\",\`}; do
+      bindkey -M $mode $key select-quoted
+    done
+  done
+}
 
-# 単語の区切り文字を指定する
-autoload -Uz select-word-style && select-word-style default
+######################
+#  Terminal Support  #
+######################
+__term_support() {
+  # set title
+  if [[ -n "$SSH_CONNECTION" ]]; then
+    print -Pn "\e]0;%m: %1~\a"
+  else
+    print -Pn "\e]0;%1~\a"
+  fi
 
-# ここで指定した文字は単語区切りとみなされる
-# / も区切りと扱うので、^W でディレクトリ１つ分を削除できる
-zstyle ':zle:*' word-chars " /=;@:{},|"
-zstyle ':zle:*' word-style unspecified
+  # report working directory
+  () {
+    setopt localoptions extended_glob no_multibyte
+    local match mbegin mend
+    local pattern="[^A-Za-z0-9_.!~*\'\(\)-\/]"
+    local unsafepwd; unsafepwd=( ${(s::)PWD} )
 
-# 日本語ファイル名を表示可能にする
-setopt print_eight_bit
+    # url encode
+    printf "\e]7;file://%s%s\a" \
+      "$HOST" ${(j::)unsafepwd/(#b)($~pattern)/%${(l:2::0:)$(([##16]#match))}}
+  }
 
-# beep を無効にする
-setopt no_beep
+  # report current username to iTerm
+  if zstyle -T ':iterm2:osc' enable; then
+    printf "\e]1337;RemoteHost=%s@\a" "$USER"
+  fi
+}
 
-# フローコントロールを無効にする
-setopt no_flow_control
+__vi_cursor() {
+  local shape=6
+  [[ "$ZLE_STATE" == *overwrite* ]] && shape=4
+  [[ "$KEYMAP" == vicmd ]] && shape=2
+  print -Pn "\e[$shape q"
+}
 
-# '#' 以降をコメントとして扱う
+__reset_cursor() {
+  print -Pn "\e[2 q"
+}
+
+case "$TERM" in
+  xterm*|screen*|tmux*)
+    zle -N zle-line-init __vi_cursor
+    zle -N zle-keymap-select __vi_cursor
+    add-zsh-hook preexec __reset_cursor
+    add-zsh-hook precmd __term_support
+    ;|
+  eterm*|xterm-kitty)
+    zstyle ':iterm2:osc' enable false
+    ;;
+esac
+
+##########
+#  Misc  #
+##########
 setopt interactive_comments
-
-# cd したら自動的にpushdする
-setopt auto_pushd
-
-# 重複したディレクトリを追加しない
-setopt pushd_ignore_dups
-
-# 高機能なワイルドカード展開を使用する
-setopt extended_glob
-# 内部コマンド jobs の出力をデフォルトで jobs -l にする
 setopt long_list_jobs
-
-# リダイレクトによる上書き禁止
 setopt no_clobber
-
-# 再コンパイル設定
-autoload -Uz zrecompile && zrecompile -p -R ~/.zshrc -- -M ~/.zcompdump &!
+setopt no_flowcontrol
+autoload -Uz select-word-style && select-word-style bash
+autoload -Uz zrecompile && \
+  zrecompile -pq -R ~/.zshrc -- -M ~/.cache/zsh/compdump &!
 autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
-
-if [ -e ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-    source ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-    ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
+if is-at-least 5.2; then
+  autoload -Uz bracketed-paste-url-magic && \
+    zle -N bracketed-paste bracketed-paste-url-magic
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+command -v lesspipe >/dev/null 2>&1 && eval "$(SHELL=/bin/sh lesspipe)"
+source /etc/zsh_command_not_found
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+###########
+#  Theme  #
+###########
+if [[ "$TERM" == "dumb" ]]; then
+  unsetopt zle prompt_cr prompt_subst
+  add-zsh-hook -D precmd '*'
+  add-zsh-hook -D preexec '*'
+  PROMPT="%n: %~%# "
+  return
+fi
 
+unset LS_COLORS # clear distro defaults
+
+autoload -Uz promptinit && promptinit
+prompt concise
+
+# must be run last
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)

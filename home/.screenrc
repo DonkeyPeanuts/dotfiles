@@ -1,53 +1,25 @@
-# common setting
-escape ^Rr
+###########
+#  Basic  #
+###########
 startup_message off
-shell /bin/bash
-defscrollback 1024
-shelltitle '$ |sh'
-chdir
-vbell on
-multiuser off
-altscreen off
-
-# encode
-defc1 off
-defutf8 on
-defencoding UTF-8
-
-# key bind
-bind + resize +5
-bind - resize -5
-bind U eval "encoding utf8"
-bind E eval "encoding euc-jp"
-bind J eval "encoding sjis"
-bind . source $HOME/.screenrc
-
-# Resize window
-bind e eval 'command -c resize' 'echo "Resize window"'
-bind ^e eval 'command -c resize' 'echo "Resize window"'
-bind -c resize h eval 'command -c resize' 'resize -h -1'
-bind -c resize l eval 'command -c resize' 'resize -h +1'
-bind -c resize j eval 'command -c resize' 'resize -v +1'
-bind -c resize k eval 'command -c resize' 'resize -v -1'
-bind -c resize ^h eval 'command -c resize' 'resize -h -1'
-bind -c resize ^l eval 'command -c resize' 'resize -h +1'
-bind -c resize ^j eval 'command -c resize' 'resize -v +1'
-bind -c resize ^k eval 'command -c resize' 'resize -v -1'
-
-# color setting
-attrcolor b ".I"
-defbce on
-
-
-# terminfo
-#term screen-256color
+escape ^Zz
+verbose on
+autodetach on
+ignorecase on
 term xterm-256color
+defflow off
 
-# caption and hardstatus
-caption always ' %?%F%{-b kW}%:%{-b Kk}%? %-w%{= BW}%n %t%{-}%+w %= %2'
-hardstatus alwayslastline " load average : %l %h %= host machine : %{= .g}%H%{-} [%02c %m/%d(%D)]"
-termcapinfo xterm-256color 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+############
+#  Window  #
+############
+bind c screen 1
+bind 0 select 10
+screen 1
+altscreen on
 
-#termcapinfo xterm* ti@:te@
-
-cjkwidth on
+###########
+#  Theme  #
+###########
+termcapinfo xterm* 'hs:ts=\E]2;:fs=\007:ds=\E]2;\007'
+hardstatus string 'screen (%n: %t)'
+caption always '%{= gk}[%S] %-w%n %t*%+w %= "%H" %c %d-%M-%Y'
