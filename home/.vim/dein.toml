@@ -16,9 +16,21 @@ repo = 'Shougo/vimshell'
 
 [[plugins]]
 repo = 'tpope/vim-fugitive'
+hook_add = '''
+  let g:airline#extensions#branch#enabled = 1
+  nnoremap [fugitive]  <Nop>
+  nmap <space>g [fugitive]
+  nnoremap <silent> [fugitive]s :Gstatus<CR><C-w>T
+  nnoremap <silent> [fugitive]a :Gwrite<CR>
+  nnoremap <silent> [fugitive]c :Gcommit-v<CR>
+  nnoremap <silent> [fugitive]b :Gblame<CR>
+  nnoremap <silent> [fugitive]p :Gpull<CR>
+  nnoremap <silent> [fugitive]d :Gdiff<CR>
+  nnoremap <silent> [fugitive]m :Gmerge<CR>
+'''
 
 [[plugins]]
-repo = 'CoatiSoftware/vim-sourcetrail'
+repo = 'airblade/vim-gitgutter'
 
 [[plugins]]
 repo = 'kien/ctrlp.vim'
@@ -56,6 +68,14 @@ depends = ['vim-airline-themes']
 
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes'
+hook_add = '''
+  set laststatus=2
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#tabline#buffer_idx_mode = 1
+  let g:airline#extensions#whitespace#mixed_indent_algo = 1
+  let g:airline_theme = 'dark'
+'''
 
 [[plugins]]
 repo = 'editorconfig/editorconfig-vim'
@@ -76,20 +96,25 @@ repo = 'honza/vim-snippets'
 
 [[plugins]]
 repo = 'junegunn/fzf'
+build = './install --bin'
 merged = 0
 
 [[plugins]]
 repo = 'junegunn/fzf.vim'
+depends = 'fzf'
+hook_add = '''
+  command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --line-number --no-heading '.shellescape(<q-args>), 0,
+    \   fzf#vim#with_preview({'options': '--exact --reverse'}, 'right:50%:wrap'))
+'''
 merged = 0
 
 [[plugins]]
-repo = 'Valloric/YouCompleteMe'
-merged = 0
+repo = 'Yggdroot/indentLine'
 
 [[plugins]]
-repo = 'rdnetto/YCM-generator'
-rev = 'stable'
-on_cmd = ['YcmGenerateConfig', 'CCGenerateConfig']
+repo = 'ledger/vim-ledger'
 
 
 # colorschemes

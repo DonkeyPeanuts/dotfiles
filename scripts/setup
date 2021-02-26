@@ -27,12 +27,6 @@ exec 2>>"$_DOT_LOGFILE"
 #  syntax  #
 ############
 
-@packages() {
-  _DOT_SECTION="packages"
-  echo "$(tput bold)== ${*:-Install Packages} ==$(tput sgr0)"
-  cd "$DOTFILE_DIR" || dot::_abort "can't enter dir $DOTFILE_DIR"
-}
-
 @shell() {
   _DOT_SECTION="shell"
   echo "$(tput bold)== ${*:-Run Shell Commands} ==$(tput sgr0)"
@@ -66,7 +60,6 @@ exec 2>>"$_DOT_LOGFILE"
   fi
 
   case "$_DOT_SECTION" in
-    packages) dot::packages::task "$@" ;;
     shell) dot::shell::task "$@" ;;
     install) dot::install::task "$@" ;;
     clean) dot::clean::task "$@" ;;
@@ -172,21 +165,6 @@ dot::githooks::task() {
   popd
 
   dot::_print_badge
-}
-
-# Installs a package using the system package manager
-# Globals:
-#   _DOT_PACKAGE_UPDATED
-# Arguments:
-#   package_name : name of package
-# Returns:
-#   None
-dot::packages::task() {
-  if [[ -z "$_DOT_PACKAGE_UPDATED" ]]; then
-    _DOT_PACKAGE_UPDATED=true
-    sudo apt-get update
-  fi
-  sudo apt-get install -y "$1"
 }
 
 # Skip section

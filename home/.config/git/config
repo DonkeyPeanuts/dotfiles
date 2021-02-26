@@ -1,30 +1,35 @@
 [user]
-	name = midchildan
-	email = git@midchildan.org
-	signingkey = 0x186A1EDAC5C63F83
-[push]
-	default = simple
+	name = 
+	email = 
+[diff]
+	algorithm = histogram
+	colorMoved = default
 [merge]
 	tool = vimdiff
+[mergetool]
+	keepBackup = false
 [rebase]
 	autosquash = true
-[commit]
-	gpgsign = true
+[pull]
+	ff = only
+[push]
+	default = simple
 [alias]
 	exec = "!exec " # run a shell command from the top directory
-[merge "ours"]
-	driver = true
-[protocol "keybase"]
-	allow = always
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
 	newNormal = green bold
 	newHighlight = green bold 22
-[difftool "kitty"]
-	cmd = kitty +kitten diff $LOCAL $REMOTE
-[difftool "kitty.gui"]
-	cmd = kitty kitty +kitten diff $LOCAL $REMOTE
-[ghq]
-	root = ~/Documents/src/go/src
-	root = ~/Documents/src/repos
+[merge "ours"]
+	driver = true
+[mergetool "vimdiff"]
+	path = nvim
+[mergetool "vimdiff2"]
+	path = nvim
+[mergetool "vimdiff3"]
+	path = nvim
+[protocol "keybase"]
+	allow = always
+[delta]
+	line-numbers = true

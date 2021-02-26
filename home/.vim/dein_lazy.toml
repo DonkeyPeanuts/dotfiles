@@ -26,10 +26,6 @@ repo = 'scrooloose/nerdtree'
 on_cmd = ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind']
 
 [[plugins]]
-repo = 'junegunn/gv.vim'
-on_cmd = ['GV']
-
-[[plugins]]
 repo = 'Yilin-Yang/vim-markbar'
 on_map = ['<Plug>ToggleMarkbar']
 
@@ -94,6 +90,7 @@ hook_add = '''
   let g:html5_microdata_attributes_complete = 1
   let g:html5_aria_attributes_complete = 1
 '''
+
 [[plugins]]
 repo  = 'phpactor/phpactor'
 on_ft = ['php']
@@ -106,6 +103,10 @@ on_ft = ['php']
 [[plugins]]
 repo = '2072/PHP-Indenting-for-VIm'
 on_ft = ['php']
+
+[[plugins]]
+repo = 'pangloss/vim-javascript'
+on_ft = ['javascript']
 
 [[plugins]]
 repo = 'neomake/neomake'
