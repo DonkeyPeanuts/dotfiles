@@ -51,6 +51,7 @@ source "$DOTFILE_DIR/scripts/setup"
 @install Install Miscellaneous Config
   - .clang-format
   - .editrc
+  - .local/opt/tmux-copycat
   - .tmux.conf
   - .wgetrc
   - .xprofile
