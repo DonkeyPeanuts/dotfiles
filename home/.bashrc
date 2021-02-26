@@ -2,20 +2,11 @@
 #  Early Initialization  #
 ##########################
 
-# Setup some environment variables before the interactivity check. This is the
-# only place where you can place startup commands that will be picked up by
-# non-interactive SSH sessions.
-#
-# https://www.gnu.org/software/bash/manual/bash.html#Invoked-by-remote-shell-daemon
-
 export EDITOR="vim"
 export LANG="en_US.UTF-8"
 export LESS="iMR"
 export PAGER="less"
 export SYSTEMD_LESS="iRSMK"
-
-export GOPATH=~/Documents/src/go
-export ANDROID_HOME=~/.local/opt/android-sdk
 
 # whether to make use of powerline fonts
 export USE_POWERLINE=0
@@ -27,18 +18,29 @@ case $- in
   *) return ;;
 esac
 
+###########
+#  Theme  #
+###########
+if [[ $TERM == "dumb" ]]; then
+  PS1='\u@\h:\w\$ '
+  return
+fi
+
+unset LS_COLORS # clear distro defaults
+
+# prompt
+PS1='\[\033[32m\]($(date +%Y-%m-%d_%H:%M:%S))\[\033[00m\]\[\033[34m\][\h @ \u]\[\033[00m\]\[\033[33m\]:\n\w\[\033[00m\]\$ '
+
+
 ###########################
 #  Environment Variables  #
 ###########################
-export GEM_HOME="$(ruby -e 'print Gem.user_dir')"
 export GPG_TTY="$(tty)"
 
 PATH="$HOME/.local/bin:$PATH"
-PATH+=":$HOME/.cargo/bin"
 PATH+=":$GEM_HOME/bin"
 PATH+=":$(python3 -c 'import site; print(site.getuserbase())')/bin"
 PATH+=":$GOPATH/bin"
-PATH+=":$HOME/.emacs.d/bin"
 export PATH
 
 ###########################
@@ -48,13 +50,34 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias ls='ls -F --color=auto'
-alias ll='ls -lh'
-alias la='ls -lAh'
+alias l='ls -tF --color=auto'
+alias ls='ls -tF --color=auto'
+alias ll='ls -ltF --color=auto'
+alias la='ls -atF --color=auto'
+alias lla='ls -altF --color=auto'
+alias lld='ls -altFd --color=auto'
+alias grep='grep --color=auto'
+alias df='df -h'
+alias sc='screen -D -U -RR'
+alias hn='hostname'
+
+# for root
+if test "$UID" == 0; then
+    alias mv='mv -i'
+    alias cp='cp -i'
+    alias rm='rm -i'
+fi
 
 #############
 #  History  #
 #############
+function share_history
+{
+    history -a
+    history -c
+    history -r
+}
+PROMPT_COMMAND='share_history'
 HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
@@ -107,27 +130,24 @@ case "$TERM" in
     ;;
 esac
 
-###########
-#  Theme  #
-###########
-if [[ $TERM == "dumb" ]]; then
-  PS1='\u@\h:\w\$ '
-  return
+# test
+# shellで<back space>効かないとき用
+if test -t 0; then
+    stty stop undef
+    stty erase "^H"
 fi
 
-unset LS_COLORS # clear distro defaults
+if [ -f ~/.local/share/etc/bash-completion ]; then
+    source ~/.local/share/etc/bash_completion
+fi
+if [ -f ~/.local/share/git/git-completion.bash ]; then
+    source ~/.local/share/git/git-completion.bash
+fi
+if [ -f ~/.local/share/git/git-prompt.sh ]; then
+    source ~/.local/share/git/git-prompt.sh
+    GIT_PS1_SHOWDIRTYSTATE=true
+    GIT_PS1_SHOWUNTRACKEDFILES=true
+    export PS1='\[\033[32m\]($(date +%Y-%m-%d_%H:%M:%S))\[\033[00m\]\[\033[34m\][\h @ \u]\[\033[00m\]\[\033[33m\]:\n\w\[\033[00m\]\[\033[35m\]$(__git_ps1 [%s])\[\033[00m\]\$ '
+fi
 
-__prompt_color='\[\e[1m\]'
-__prompt_login='\u'
-__prompt_title='\[\e]0;\w\a\]'
-if [[ -n "$SSH_CONNECTION" ]]; then
-  __prompt_color='\[\e[1;32m\]'
-  __prompt_login+='@\h'
-  __prompt_title='\[\e]0;\u@\h:\w\a\]'
-fi
-if (( EUID == 0 )); then
-  __prompt_color='\[\e[1;31m\]'
-fi
-PS1=$__prompt_title$__prompt_color$__prompt_login
-PS1+='\[\e[0;1m\]:\[\e[34m\]\w\[\e[0;1m\]\$\[\e[0m\] '
-unset __prompt_color __prompt_login __prompt_title
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

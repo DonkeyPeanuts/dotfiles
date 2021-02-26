@@ -1,59 +1,60 @@
+filetype off
+
 """"""""""""""""""""
 "  Initialization  "
 """"""""""""""""""""
-call plug#begin('~/.vim/plugged')
-" editing
-Plug 'junegunn/vim-easy-align'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'tpope/vim-commentary'
-Plug 'machakann/vim-sandwich'
-Plug 'easymotion/vim-easymotion', {'on': [
-  \ '<Plug>(easymotion-j)', '<Plug>(easymotion-k)',
-  \ '<Plug>(easymotion-s2)', '<Plug>(easymotion-overwin-f2)',
-  \ '<Plug>(easymotion-sn)', '<Plug>(easymotion-tn)' ]}
 
-" completion and linting
-Plug 'w0rp/ale'
-Plug 'junegunn/fzf', {'dir': '~/.local/opt/fzf', 'do': '~/.local/libexec/fzf/install'}
-Plug 'junegunn/fzf.vim'
-Plug 'Valloric/YouCompleteMe', { 'do': function('vimrc#plug#ycm')}
-Plug 'rdnetto/YCM-generator', {'branch': 'stable',
-  \ 'on': ['YcmGenerateConfig', 'CCGenerateConfig']}
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+" dein 設定
+if &compatible
+    set nocompatible
+endif
 
-" utilities
-Plug 'tpope/vim-fugitive'
-Plug 'machakann/vim-highlightedyank'
-Plug 'RRethy/vim-illuminate'
-Plug 'junegunn/vim-peekaboo'
-Plug 'mhinz/vim-signify'
-Plug 'wellle/context.vim', {'on': 'ContextToggle'}
-Plug 'junegunn/gv.vim', {'on': 'GV'}
-Plug 'Yggdroot/indentLine', {'on': 'IndentLinesEnable'}
-Plug 'Yilin-Yang/vim-markbar', {'on': '<Plug>ToggleMarkbar'}
-Plug 'scrooloose/nerdtree', {'on': ['NERDTreeToggle', 'NERDTreeFind']}
-Plug 'CoatiSoftware/vim-sourcetrail',
-  \ {'for': ['c', 'cpp', 'cuda', 'java', 'python']}
-Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
-Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
+let s:dein_dir = expand('~/.cache/dein')
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
-" colorschemes
-Plug 'morhetz/gruvbox'
-Plug 'midchildan/molokai'
+if &runtimepath !~# '/dein.vim'
+    if !isdirectory(s:dein_repo_dir)
+        execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+    endif
+    execute 'set runtimepath^=' . s:dein_repo_dir
+endif
 
-" filetypes
-Plug 'midchildan/ft-confluence.vim'
-Plug 'ledger/vim-ledger', {'for': 'ledger'}
-Plug 'LnL7/vim-nix', {'for': 'nix'}
-Plug 'rust-lang/rust.vim', {'for': 'rust'}
-Plug 'lervag/vimtex'
+if dein#load_state(s:dein_dir)
+    call dein#begin(s:dein_dir)
+    let s:toml = '~/.dein.toml'
+    let s:lazy_toml = '~/.dein_lazy.toml'
+    call dein#load_toml(s:toml, {'lazy': 0})
+    call dein#load_toml(s:lazy_toml, {'lazy': 1})
 
-" just for fun
-Plug 'vim/killersheep', {'on': 'KillKillKill'}
+    let g:dein#install_process_timeout =  600
+    if has('job') && has('channel') && has('timers')
+      call dein#add('dense-analysis/ale')
+    else
+      call dein#add('vim-syntastic/syntastic')
+    endif
+    let g:dein#install_process_timeout =  120
 
-" filetype plugin indent and syntax is handled by plug#end
-call plug#end()
+    if ((has('nvim')  || has('timers')) && has('python3')) && system('pip3 show neovim') !=# ''
+        call dein#add('Shougo/deoplete.nvim')
+        if !has('nvim')
+            call dein#add('roxma/nvim-yarp')
+            call dein#add('roxma/vim-hug-neovim-rpc')
+        endif
+    endif
+
+    call dein#end()
+    call dein#save_state()
+endif
+
+if dein#tap('deoplete.nvim')
+  let g:deoplete#enable_at_startup = 1
+elseif dein#tap('neocomplete.vim')
+  let g:neocomplete#enable_at_startup = 1
+endif
+
+if dein#check_install()
+    call dein#install()
+endif
 
 silent! packadd! cfilter
 if !has('nvim')
@@ -68,6 +69,7 @@ augroup END
 """""""""""""
 "  Editing  "
 """""""""""""
+set ff=unix
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,iso-2022-jp,euc-jp,cp932,default,latin1
 set fileformats=unix,dos,mac
@@ -81,6 +83,10 @@ set copyindent
 set preserveindent
 set formatoptions+=jmB
 set omnifunc=syntaxcomplete#Complete
+set ambiwidth=double
+set statusline=%<%f%=%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%9(\ %m%r\ %)[%4v][%12(\ %5l/%5L%)]
+set virtualedit=onemore
+
 
 " jump to the last known cursor position
 au vimrc BufReadPost *
@@ -115,6 +121,28 @@ set wildignorecase
 set nofoldenable
 set title
 set mouse=a
+set shortmess+=I
+
+"外部で変更のあったファイルは読み直す
+set autoread
+
+"現在の行/列の強調
+set cursorline
+set cursorcolumn
+
+"Escでハイライト消去
+nmap <Esc><Esc> :nohlsearch<CR><Esc>
+
+"windowサイズ調整
+let g:winresizer_start_key = '<C-E>'
+
+if exists('+inccommand')
+  set inccommand=split
+endif
+
+" show whitespace errors
+hi link WhitespaceError Error
+au vimrc Syntax * syn match WhitespaceError /\s\+$\| \+\ze\t/
 
 " colors
 if has('gui_running')
@@ -131,6 +159,8 @@ else
   endif
 endif
 
+autocmd ColorScheme * highlight Comment ctermfg=245
+
 if s:color_level >=? 2
   set termguicolors
   if exists('+pumblend')
@@ -140,8 +170,10 @@ endif
 if s:color_level >=? 1
   set background=dark
   try
-    colorscheme gruvbox
-    set cursorline
+    let g:molokai_original = 1
+    let g:rehash256 = 1
+    colorscheme molokai
+    set t_Co=256
   catch /E185:/ " colorscheme doesn't exist
   endtry
 endif
@@ -191,6 +223,13 @@ endfor
 """""""""""""""""
 "  Keybindings  "
 """""""""""""""""
+"vimでbackspaceを入れても無反応 or Delete状態の時のおまじない
+noremap
+noremap!
+
+"returnキーで改行
+noremap <CR> o<ESC>
+
 let mapleader="\<Space>"
 let maplocalleader="\<CR>"
 " XXX: Workaround for <Nop> bug in vim/vim#1548, neovim/neovim#6241
@@ -243,83 +282,10 @@ xnoremap <silent> il <Esc>^vg_
 onoremap <silent> il :<C-u>normal! ^vg_<CR>
 xnoremap <silent> a, gg0oG$
 onoremap <silent> a, :<C-u>exe "normal! m`"<Bar>keepjumps normal! ggVG<CR>
-" XXX: Same feature as vim/vim#958
-xmap im <Plug>(textobj-sandwich-literal-query-i)
-omap im <Plug>(textobj-sandwich-literal-query-i)
-xmap am <Plug>(textobj-sandwich-literal-query-a)
-omap am <Plug>(textobj-sandwich-literal-query-a)
-
-" toggles
-nmap <Leader>tm <Plug>ToggleMarkbar
-nnoremap <silent> <Leader>tf :NERDTreeToggle<CR>
-nnoremap <silent> <Leader>th :set bufhidden! bufhidden?<CR>
-nnoremap <silent> <Leader>tp :call vimrc#toggle_recursive_path()<CR>
-nnoremap <silent> <Leader>tl :ALEToggle<CR>
-nnoremap <silent> <Leader>ts :setlocal spell! spell?<CR>
-nnoremap <silent> <Leader>tt :TagbarToggle<CR>
-nnoremap <silent> <Leader>tu :UndotreeToggle<CR>
-nnoremap <silent> <Leader>tv :call vimrc#toggle_virtualedit()<CR>
-nnoremap <silent> <Leader>tq :call vimrc#toggle_textwidth()<CR>
-nnoremap <silent> <Leader>tz :ContextToggle<CR>
-nnoremap <silent> <Leader>t# :setlocal relativenumber! relativenumber?<CR>
-nnoremap <silent> <Leader>t* :IlluminationToggle<CR>
-nnoremap <silent> <Leader>t~ :set ignorecase! ignorecase?<CR>
-nnoremap <silent> <Leader>t<Space> :call vimrc#toggle_whitespace_check()<CR>
-nnoremap <silent> <Leader>t<Tab> :call vimrc#toggle_whitespace_visibility()<CR>
-
-" FZF mappings
-imap <C-x><C-x><C-f> <Plug>(fzf-complete-path)
-imap <C-x><C-x><C-k> <Plug>(fzf-complete-word)
-imap <C-x><C-x><C-l> <Plug>(fzf-complete-line)
-inoremap <silent> <C-x><C-x><C-j> <Esc>:Snippets<CR>
-nnoremap <silent> <Leader>gb :Buffers<CR>
-nnoremap <silent> <Leader>gf :Files<CR>
-nnoremap <silent> <Leader>gp :GitFiles<CR>
-nnoremap <silent> <Leader>g/ :Lines<CR>
-nnoremap <silent> <Leader>g<C-]> :Tags <C-r>=expand("<cword>")<CR><CR>
-nnoremap <silent> <Leader>q: :History:<CR>
-nnoremap <silent> <Leader>q/ :History/<CR>
-nnoremap <silent> <Leader>K :Helptags<CR>
-nnoremap <silent> <Leader>' :Marks<CR>
-nnoremap <silent> <Leader>/ :BLines<CR>
-nnoremap <silent> <Leader>: :Commands<CR>
-nnoremap <silent> <Leader><C-o> :History<CR>
-nnoremap <silent> <Leader><C-]> :BTags <C-r>=expand("<cword>")<CR><CR>
-
-" easymotion
-nmap <Leader>j <Plug>(easymotion-j)
-xmap <Leader>j <Plug>(easymotion-j)
-omap <Leader>j <Plug>(easymotion-j)
-nmap <Leader>k <Plug>(easymotion-k)
-xmap <Leader>k <Plug>(easymotion-k)
-omap <Leader>k <Plug>(easymotion-k)
-nmap <Leader>s <Plug>(easymotion-s2)
-xmap <Leader>s <Plug>(easymotion-s2)
-omap <Leader>s <Plug>(easymotion-s2)
-nmap <Leader>s <Plug>(easymotion-overwin-f2)
-nmap g/ <Plug>(easymotion-sn)
-xmap g/ <Plug>(easymotion-sn)
-omap g/ <Plug>(easymotion-tn)
-
-" vim-easy-align
-nmap g= <Plug>(EasyAlign)
-xmap g= <Plug>(EasyAlign)
 
 " vim-sandwich
 nmap s <Nop>
 xmap s <Nop>
-
-" YouCompleteMe
-nnoremap <silent> <Leader><Leader>cf :YcmCompleter FixIt<CR>
-nnoremap <silent> <Leader><Leader>cw :YcmCompleter RefactorRename<CR>
-xnoremap <silent> <Leader><Leader>gq  :YcmCompleter Format<CR>
-nnoremap <silent> <Leader><Leader>gq :YcmCompleter Format<CR>
-nnoremap <silent> <Leader><Leader>l :YcmDiags<CR>
-nnoremap <silent> <Leader><Leader>K :YcmCompleter GetDoc<CR>
-nnoremap <silent> <Leader><Leader>* :YcmCompleter GoToReferences<CR>
-nnoremap <silent> <Leader><Leader>[l :YcmShowDetailedDiagnostic<CR>
-nnoremap <silent> <Leader><Leader>[t :YcmCompleter GetType<CR>
-nnoremap <silent> <Leader><Leader><C-]> :YcmCompleter GoTo<CR>
 
 " 3-way merge
 nnoremap <silent> <Leader>1 :diffget LOCAL<CR>
@@ -357,39 +323,6 @@ if s:has_rg
 else
   command! -bang -nargs=* Grep
     \ call fzf#vim#grep('grep -r --line-number '.shellescape(<q-args>).' *', 0, <bang>0)
-endif
-
-" EasyMotion"
-let g:EasyMotion_do_mapping=0
-let g:EasyMotion_smartcase=1
-let g:EasyMotion_use_migemo=1
-
-" EditorConfig "
-let g:EditorConfig_exclude_patterns=['fugitive://.*', '\(M\|m\|GNUm\)akefile']
-
-" UltiSnips "
-let g:UltiSnipsExpandTrigger='<C-x><C-j>'
-
-" YouCompleteMe "
-let g:ycm_key_list_select_completion=[]
-let g:ycm_key_list_previous_completion=[]
-let g:ycm_key_invoke_completion='<C-x><C-x><C-x>'
-let g:ycm_global_ycm_extra_conf='~/.vim/ycm_extra_conf.py'
-let g:ycm_extra_conf_vim_data=[
-  \ '&filetype',
-  \ 'g:ycm_python_interpreter_path',
-  \ 'g:ycm_python_sys_path']
-
-let g:ycm_python_interpreter_path = ''
-let g:ycm_python_sys_path = []
-let g:ycm_rust_src_path='~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
-
-let g:ycm_semantic_triggers =  {
-  \   'c': [ 're!\w{4}', '_' ],
-  \   'python': [ 're!\bfrom ', 're!\bimport (?:\w+, )*' ],
-  \   'vim' : [ 're!^', 're!\bset(?:l(?:ocal)?)? (?:\w+[!?]? )*' ] }
-if exists('g:vimtex#re#youcompleteme')
-  let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
 endif
 
 " airline "
