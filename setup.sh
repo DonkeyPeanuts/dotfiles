@@ -32,7 +32,7 @@ source "$DOTFILE_DIR/scripts/setup"
 
 @shell Update git scripts
   - curl -o .local/share/git/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-  - curl -o .local/share/git/git-completion.zsh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+  - curl -o .local/share/zsh/site-functions/_git https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
   - curl -o .local/share/git/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 
 @install Install Vim Config
