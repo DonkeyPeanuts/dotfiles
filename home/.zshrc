@@ -10,9 +10,9 @@ bindkey -e
 ########################################
 # completion周りの設定
 ########################################
-fpath=(.local/share/zsh/site-functions $fpath)
-if [ -e .local/share/zsh-completions ]; then
-  fpath=(.local/share/zsh-completions $fpath)
+fpath=(~/.local/share/zsh/site-functions $fpath)
+if [ -e ~/.local/share/zsh/plugins/zsh-completions ]; then
+  fpath=(~/.local/share/zsh/plugins/zsh-completions $fpath)
 fi
 
 autoload -Uz compinit
