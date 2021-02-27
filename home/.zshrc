@@ -237,8 +237,10 @@ setopt no_clobber
 autoload -Uz zrecompile && zrecompile -p -R ~/.zshrc -- -M ~/.zcompdump &!
 autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
 
+# @TODO Change according to your environment
 export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 
+# @TODO Change according to your environment
 export GO_ROOT=/usr/local/go
 export PATH=$PATH:$GOROOT/bin
 
@@ -256,4 +258,5 @@ fi
 
 [ -f ~/.local/share/git/git-completion.zsh ] && source ~/.local/share/git/git-completion.zsh
 
+# @TODO Change according to your environment
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

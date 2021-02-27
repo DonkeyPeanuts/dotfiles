@@ -26,7 +26,8 @@ if [[ $TERM == "dumb" ]]; then
   return
 fi
 
-unset LS_COLORS # clear distro defaults
+# clear distro defaults
+unset LS_COLORS
 
 # prompt
 PS1='\[\033[32m\]($(date +%Y-%m-%d_%H:%M:%S))\[\033[00m\]\[\033[34m\][\h @ \u]\[\033[00m\]\[\033[33m\]:\n\w\[\033[00m\]\$ '
@@ -45,7 +46,6 @@ alias ll='ls -ltF --color=auto'
 alias la='ls -atF --color=auto'
 alias lla='ls -altF --color=auto'
 alias lld='ls -altFd --color=auto'
-alias grep='grep --color=auto'
 alias df='df -h'
 alias sc='screen -D -U -RR'
 alias hn='hostname'
@@ -122,8 +122,10 @@ fi
 ###########################
 export GPG_TTY="$(tty)"
 
+# @TODO Change according to your environment
 export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 
+# @TODO Change according to your environment
 export GO_ROOT=/usr/local/go
 export PATH=$PATH:$GOROOT/bin
 
@@ -134,6 +136,7 @@ export PYENV_ROOT=$HOME/.local/share/opt/pyenv
 export PATH=$PATH:$PYENV_ROOT/bin
 eval "$(pyenv init -)"
 
+# @TODO Change according to your environment
 [ -f $(brew --prefix)/etc/profile.d/bash-completion.bash ] && source $(brew --prefix)/etc/profile.d/bash_completion.bash
 
 [ -f ~/.local/share/git/git-completion.bash ] && source ~/.local/share/git/git-completion.bash
@@ -145,4 +148,5 @@ if [ -f ~/.local/share/git/git-prompt.sh ]; then
     export PS1='\[\033[32m\]($(date +%Y-%m-%d_%H:%M:%S))\[\033[00m\]\[\033[34m\][\h @ \u]\[\033[00m\]\[\033[33m\]:\n\w\[\033[00m\]\[\033[35m\]$(__git_ps1 [%s])\[\033[00m\]\$ '
 fi
 
+# @TODO Change according to your environment
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
