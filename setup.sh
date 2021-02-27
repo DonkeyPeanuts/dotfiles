@@ -53,6 +53,8 @@ source "$DOTFILE_DIR/scripts/setup"
   - .clang-format
   - .editrc
   - .local/opt/tmux-copycat
+  - .local/opt/pyenv
+  - .local/opt/rbenv
   - .tmux.conf
   - .wgetrc
   - .xprofile

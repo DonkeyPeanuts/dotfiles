@@ -10,9 +10,9 @@ bindkey -e
 ########################################
 # completion周りの設定
 ########################################
-fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
-if [ -e $(brew --prefix)/share/zsh-completions ]; then
-  fpath=($(brew --prefix)/share/zsh-completions $fpath)
+fpath=(.local/share/zsh/site-functions $fpath)
+if [ -e .local/share/zsh-completions ]; then
+  fpath=(.local/share/zsh-completions $fpath)
 fi
 
 autoload -Uz compinit
@@ -105,7 +105,7 @@ __update_term() {
 
   local right="%{\e[38;5;3m%}(%~)%{\e[m%}"
   # スペースの長さを計算
-  # テキストを装飾する場合、エスケープシーケンスをカウントしないようにします
+  # テキストを装飾する場合、エスケープシーケンスをカウントしない
   local invisible='%([BSUbfksu]|([FK]|){*})'
   local leftwidth=${#${(S%%)left//$~invisible/}}
   local rightwidth=${#${(S%%)right//$~invisible/}}
@@ -138,19 +138,11 @@ alias df='df -h'
 alias sc='screen -D -U -RR'
 alias hn='hostname'
 
-
 alias mv='mv -i'
 alias cp='cp -i'
 alias rm='rm -i'
 
-alias vim='/usr/local/bin/vim'
-
 alias history='history -i'
-
-alias go='/usr/local/go/bin/go'
-
-export GOPATH=$HOME/.go
-export PATH=/usr/local/bin:$PATH:/usr/local/go/bin
 
 ########################################
 # history共有周りの設定
@@ -245,12 +237,21 @@ setopt no_clobber
 autoload -Uz zrecompile && zrecompile -p -R ~/.zshrc -- -M ~/.zcompdump &!
 autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
 
-source ~/.zsh_plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
+
+export GO_ROOT=/usr/local/go
+export PATH=$PATH:$GOROOT/bin
+
+export RBENV_ROOT=$HOME/.local/share/opt/rbenv/
+export PATH=$PATH:$RBENV_ROOT/bin
+
+export PYENV_ROOT=$HOME/.local/share/opt/pyenv
+export PATH=$PATH:$PYENV_ROOT/bin
+eval "$(pyenv init -)"
+
+source ~/.local/share/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.local/share/git/git-completion.zsh ] && source ~/.local/share/git/git-completion.zsh
 
-export PATH=$HOME/.nodebrew/current/bin:$PATH
-export PYENV_ROOT=$HOME/.pyenv
-export PATH=$PYENV_ROOT/bin:$PATH
-eval "$(pyenv init -)"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

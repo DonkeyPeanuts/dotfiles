@@ -33,17 +33,6 @@ PS1='\[\033[32m\]($(date +%Y-%m-%d_%H:%M:%S))\[\033[00m\]\[\033[34m\][\h @ \u]\[
 
 
 ###########################
-#  Environment Variables  #
-###########################
-export GPG_TTY="$(tty)"
-
-PATH="$HOME/.local/bin:$PATH"
-PATH+=":$GEM_HOME/bin"
-PATH+=":$(python3 -c 'import site; print(site.getuserbase())')/bin"
-PATH+=":$GOPATH/bin"
-export PATH
-
-###########################
 #  Aliases and Functions  #
 ###########################
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -95,16 +84,6 @@ stty -ixoff -ixon # disable flow control
 
 command -v lesspipe >/dev/null 2>&1 && eval "$(SHELL=/bin/sh lesspipe)"
 
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
-
-source ~/.local/opt/fzftools/fzftools.bash
-
 # Report the working directory
 case "$TERM" in
   xterm*|screen*|tmux*)
@@ -137,12 +116,28 @@ if test -t 0; then
     stty erase "^H"
 fi
 
-if [ -f ~/.local/share/etc/bash-completion ]; then
-    source ~/.local/share/etc/bash_completion
-fi
-if [ -f ~/.local/share/git/git-completion.bash ]; then
-    source ~/.local/share/git/git-completion.bash
-fi
+
+###########################
+#  Environment Variables  #
+###########################
+export GPG_TTY="$(tty)"
+
+export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
+
+export GO_ROOT=/usr/local/go
+export PATH=$PATH:$GOROOT/bin
+
+export RBENV_ROOT=$HOME/.local/share/opt/rbenv/
+export PATH=$PATH:$RBENV_ROOT/bin
+
+export PYENV_ROOT=$HOME/.local/share/opt/pyenv
+export PATH=$PATH:$PYENV_ROOT/bin
+eval "$(pyenv init -)"
+
+[ -f $(brew --prefix)/etc/profile.d/bash-completion.bash ] && source $(brew --prefix)/etc/profile.d/bash_completion.bash
+
+[ -f ~/.local/share/git/git-completion.bash ] && source ~/.local/share/git/git-completion.bash
+
 if [ -f ~/.local/share/git/git-prompt.sh ]; then
     source ~/.local/share/git/git-prompt.sh
     GIT_PS1_SHOWDIRTYSTATE=true
