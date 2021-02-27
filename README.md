@@ -55,3 +55,13 @@ $ git worktree add ~/.config/dotfiles local  # checkout local branch
 $ cd ~/.config/dotfiles
 $ ./setup.sh
 ```
+
+## Uninstallation
+削除したり入れ直したいときは設定ファイルを吹き飛ばす(他のパッケージ等の設定が入っている場合は注意)
+
+```console
+$ rm -rf ~/.config ~/.local
+$ cd ${cloneした作業ディレクトリ}
+$ git worktree prune
+$ git branch -D ${ローカル用ブランチ}
+```
