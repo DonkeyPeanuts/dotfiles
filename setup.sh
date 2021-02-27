@@ -23,11 +23,12 @@ source "$DOTFILE_DIR/scripts/setup"
   - .inputrc
   - .config/shell/snippets/common
   - .config/shell/snippets/linux
-  - .config/shell/snippets/main/common.md
-  - .config/shell/snippets/main/linux.md
   - .config/shell/templates
   - .config/shell/templates.csv
   - .local/share/zsh/site-functions
+  - .local/share/zsh/plugins/cf-zsh-autocomplete-plugin
+  - .local/share/zsh/plugins/zsh-completions
+  - .local/share/zsh/plugins/zsh-syntax-highlighting 
   - .local/share/git
 
 @install Install Vim Config
