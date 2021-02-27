@@ -120,9 +120,20 @@ repo = 'ledger/vim-ledger'
 # colorschemes
 [[plugins]]
 repo = 'tomasr/molokai'
+hook_add = '''
+  set background=dark
+  au MyAutoCmd VimEnter * nested colorscheme molokai
+'''
 
 [[plugins]]
 repo = 'morhetz/gruvbox'
+hook_add = '''
+  au MyAutoCmd VimEnter * nested colorscheme gruvbox
+'''
 
 [[plugins]]
 repo = 'crusoexia/vim-monokai'
+hook_add = '''
+  set background=dark
+  au MyAutoCmd VimEnter * nested colorscheme monokai
+'''
