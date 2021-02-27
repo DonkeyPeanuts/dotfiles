@@ -1,6 +1,6 @@
 [user]
-	name = "Donkey Peanuts"
-	email = sssimas08@outlook.jp
+	name = 
+	email = 
 [diff]
 	algorithm = histogram
 	colorMoved = default
