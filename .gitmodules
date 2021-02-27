@@ -1,13 +1,15 @@
-[submodule "home/.local/opt/tmux-copycat"]
-	path = home/.local/opt/tmux-copycat
-	url = https://github.com/tmux-plugins/tmux-copycat.git
-	ignore = all
-[submodule "home/.local/share/zsh/plugins/cf-zsh-autocomplete-plugin"]
-	path = home/.local/share/zsh/plugins/cf-zsh-autocomplete-plugin
-	url = https://github.com/Dannyzen/cf-zsh-autocomplete-plugin.git
 [submodule "home/.local/share/zsh/plugins/zsh-completions"]
 	path = home/.local/share/zsh/plugins/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions.git
 [submodule "home/.local/share/zsh/plugins/zsh-syntax-highlighting"]
 	path = home/.local/share/zsh/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "home/.local/opt/tmux-copycat"]
+	path = home/.local/opt/tmux-copycat
+	url = https://github.com/tmux-plugins/tmux-copycat
+[submodule "home/.local/opt/pyenv"]
+	path = home/.local/opt/pyenv
+	url = https://github.com/pyenv/pyenv
+[submodule "home/.local/opt/rbenv"]
+	path = home/.local/opt/rbenv
+	url = https://github.com/rbenv/rbenv
