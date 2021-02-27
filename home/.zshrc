@@ -249,8 +249,10 @@ export PYENV_ROOT=$HOME/.local/share/opt/pyenv
 export PATH=$PATH:$PYENV_ROOT/bin
 eval "$(pyenv init -)"
 
-source ~/.local/share/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
+if [ -f ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+  source ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
+fi
 
 [ -f ~/.local/share/git/git-completion.zsh ] && source ~/.local/share/git/git-completion.zsh
 
