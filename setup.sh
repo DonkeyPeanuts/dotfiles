@@ -21,12 +21,11 @@ source "$DOTFILE_DIR/scripts/setup"
   - .zshrc
   - .zlogout
   - .inputrc
-  - .config/shell/snippets/common
-  - .config/shell/snippets/linux
+  - .config/shell/snippets/common.snip
+  - .config/shell/snippets/linux.snip
   - .config/shell/templates
   - .config/shell/templates.csv
   - .local/share/zsh/site-functions
-  - .local/share/zsh/plugins/cf-zsh-autocomplete-plugin
   - .local/share/zsh/plugins/zsh-completions
   - .local/share/zsh/plugins/zsh-syntax-highlighting 
   - .local/share/git
@@ -58,10 +57,3 @@ source "$DOTFILE_DIR/scripts/setup"
   - .tmux.conf
   - .wgetrc
   - .xprofile
-  - .Xresources
-
-# The below will not run unless --init is specified
-
-@githooks
-  - init: true
-  - post-receive
