@@ -73,7 +73,10 @@ $ git branch -D ${ローカル用ブランチ}
 
 ```console
 $ pyenv install 3.9.1 
+$ git clone https://github.com/yyuu/pyenv-virtualenv $(pyenv root)/plugins/pyenv-virtualenv
+$ git clone https://github.com/yyuu/pyenv-ccache $(pyenv root)/plugins/pyenv-ccache
+$ git clone https://github.com/massongit/pyenv-pip-update $(pyenv root)/plugins/pyenv-pip-update
 $ pyenv virtualenv 3.9.1 neovim-3
 $ pyenv shell neovim-3
-$ pip3 install neovim (pynvimもいるかも)
+$ pip3 install neovim pynvim
 ```
