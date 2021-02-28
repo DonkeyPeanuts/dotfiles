@@ -244,10 +244,10 @@ export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 export GO_ROOT=/usr/local/go
 export PATH=$PATH:$GOROOT/bin
 
-export RBENV_ROOT=$HOME/.local/share/opt/rbenv/
+export RBENV_ROOT=$HOME/.local/opt/rbenv/
 export PATH=$PATH:$RBENV_ROOT/bin
 
-export PYENV_ROOT=$HOME/.local/share/opt/pyenv
+export PYENV_ROOT=$HOME/.local/opt/pyenv
 export PATH=$PATH:$PYENV_ROOT/bin
 eval "$(pyenv init -)"
 
