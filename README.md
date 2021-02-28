@@ -13,6 +13,9 @@
 - vim
 - nvim
 - bash-completion
+- bat
+- tig
+- git-delta
 
 ### Step 1: git設定
 
