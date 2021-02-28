@@ -130,9 +130,6 @@ set autoread
 set cursorline
 set cursorcolumn
 
-"Escでハイライト消去
-nmap <Esc><Esc> :nohlsearch<CR><Esc>
-
 "windowサイズ調整
 let g:winresizer_start_key = '<C-E>'
 
@@ -189,10 +186,6 @@ if exists('+inccommand')
   set inccommand=split
 endif
 
-" show whitespace errors
-hi link WhitespaceError Error
-au vimrc Syntax * syn match WhitespaceError /\s\+$\| \+\ze\t/
-
 """"""""""""
 "  Search  "
 """"""""""""
@@ -226,6 +219,9 @@ endfor
 "vimでbackspaceを入れても無反応 or Delete状態の時のおまじない
 noremap
 noremap!
+
+"Escでハイライト消去
+nnoremap <ESC><ESC> :nohl<CR>
 
 "returnキーで改行
 noremap <CR> o<ESC>
@@ -292,10 +288,23 @@ nnoremap <silent> <Leader>1 :diffget LOCAL<CR>
 nnoremap <silent> <Leader>2 :diffget BASE<CR>
 nnoremap <silent> <Leader>3 :diffget REMOTE<CR>
 
+" vim-easy-align
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+
+" vim-markbar
+nmap <Leader>m <Plug>ToggleMarkbar
+
+" the following are unneeded if ToggleMarkbar is mapped
+nmap <Leader>mo <Plug>OpenMarkbar
+nmap <Leader>mc <Plug>CloseMarkbar
+
 """"""""""
 "  Misc  "
 """"""""""
 let g:tex_flavor='latex'
+let g:signify_sign_delete_first_line = '-'
+let g:python3_host_prog=$PYENV_ROOT.'/versions/neovim-3/bin/python'
 
 " See :h :DiffOrig
 command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
@@ -341,3 +350,4 @@ let g:markbar_enable_peekaboo=v:false
 
 " undotree "
 let g:undotree_WindowLayout=2
+

@@ -65,3 +65,22 @@ $ cd ${cloneした作業ディレクトリ}
 $ git worktree prune
 $ git branch -D ${ローカル用ブランチ}
 ```
+
+## Misc
+
+### neovim with python3の設定
+適当なバージョンを入れてpipでneovimを入れておく
+
+```console
+$ pyenv install 3.9.1 
+$ pyenv virtualenv 3.9.1 neovim-3
+$ pyenv shell neovim-3
+$ pip install neovim
+```
+
+### pyenv, rbenvの更新
+
+```console
+$ cd $(pyenv root)
+$ git pull
+```  
