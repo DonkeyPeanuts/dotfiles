@@ -75,12 +75,5 @@ $ git branch -D ${ローカル用ブランチ}
 $ pyenv install 3.9.1 
 $ pyenv virtualenv 3.9.1 neovim-3
 $ pyenv shell neovim-3
-$ pip install neovim
+$ pip3 install neovim (pynvimもいるかも)
 ```
-
-### pyenv, rbenvの更新
-
-```console
-$ cd $(pyenv root)
-$ git pull
-```  
