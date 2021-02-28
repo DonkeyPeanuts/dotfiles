@@ -43,6 +43,7 @@ source "$DOTFILE_DIR/scripts/setup"
   - .config/git/attributes
   - .config/git/config
   - .config/git/ignore
+  - .config/tig/config
 
 @install Install SSH Config
   - shell: install -d -m 700 ~/.ssh ~/.ssh/sockets
@@ -62,3 +63,4 @@ source "$DOTFILE_DIR/scripts/setup"
   - .tmux.conf
   - .wgetrc
   - .xprofile
+  - .config/bat/config

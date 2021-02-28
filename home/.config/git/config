@@ -31,5 +31,14 @@
 	path = nvim
 [protocol "keybase"]
 	allow = always
+[core]
+        pager = delta
+
 [delta]
-	line-numbers = true
+        plus-color = "#012800"
+        minus-color = "#340001"
+        syntax-theme = Monokai Extended
+        line-numbers = true
+
+[interactive]
+        diffFilter = delta --color-only
