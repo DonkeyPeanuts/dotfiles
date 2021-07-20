@@ -76,7 +76,7 @@ git branch -D ${ローカル用ブランチ}
 
 ### submodule 更新
 
-```
+```console
 git submodule update --remote
 ```
 
@@ -103,6 +103,7 @@ git clone https://github.com/nodenv/node-build-update-defs.git "$(nodenv root)"/
 mkdir -p "$(plenv root)"/plugins
 git clone https://github.com/tokuhirom/Perl-Build.git "$(plenv root)"/plugins/perl-build
 
+rbenv init
 mkdir -p "$(rbenv root)"/plugins
 git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
 ```
