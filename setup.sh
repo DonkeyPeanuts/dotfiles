@@ -27,7 +27,7 @@ source "$DOTFILE_DIR/scripts/setup"
   - .config/shell/templates.csv
   - .local/share/zsh/site-functions
   - .local/share/zsh/plugins/zsh-completions
-  - .local/share/zsh/plugins/zsh-syntax-highlighting 
+  - .local/share/zsh/plugins/zsh-syntax-highlighting
   - .local/share/git
 
 @shell Update git scripts
@@ -37,6 +37,9 @@ source "$DOTFILE_DIR/scripts/setup"
 
 @install Install Vim Config
   - .vim
+  - .vim/colors
+  - shell: ln -s ~/.local/share/vim/molokai/colors/molokai.vim ~/.vim/colors/molokai.vim
+  - shell: ln -s ~/.local/share/vim/gruvbox/colors/gruvbox.vim ~/.vim/colors/gruvbox.vim
   - .config/nvim
 
 @install Install Git Config
@@ -57,10 +60,9 @@ source "$DOTFILE_DIR/scripts/setup"
 @install Install Miscellaneous Config
   - .clang-format
   - .editrc
-  - .local/opt/tmux-copycat
-  - .local/opt/pyenv
-  - .local/opt/rbenv
   - .tmux.conf
   - .wgetrc
   - .xprofile
   - .config/bat/config
+  - .local/opt/tmux-copycat
+  - .local/opt/anyenv

@@ -7,9 +7,15 @@
 [submodule "home/.local/opt/tmux-copycat"]
 	path = home/.local/opt/tmux-copycat
 	url = https://github.com/tmux-plugins/tmux-copycat
-[submodule "home/.local/opt/pyenv"]
-	path = home/.local/opt/pyenv
-	url = https://github.com/pyenv/pyenv
-[submodule "home/.local/opt/rbenv"]
-	path = home/.local/opt/rbenv
-	url = https://github.com/rbenv/rbenv
+[submodule "home/.local/opt/anyenv"]
+	path = home/.local/opt/anyenv
+	url = https://github.com/anyenv/anyenv.git
+[submodule "home/.local/opt/anyenv-install"]
+	path = home/.local/opt/anyenv-install
+	url = git@github.com:anyenv/anyenv-install.git
+[submodule "home/.local/share/vim/molokai"]
+	path = home/.local/share/vim/molokai
+	url = git@github.com:tomasr/molokai.git
+[submodule "home/.local/share/vim/gruvbox"]
+	path = home/.local/share/vim/gruvbox
+	url = git@github.com:morhetz/gruvbox.git
