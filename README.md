@@ -83,8 +83,7 @@ git submodule update --remote
 ### anyenv で必要なenvのinstall
 
 ```console
-.local/opt/anyenv/bin/anyenv init
-anyenv install --init
+anyenv init
 anyenv install rbenv
 anyenv install pyenv
 anyenv install nodenv
@@ -97,15 +96,11 @@ git clone https://github.com/znz/anyenv-update.git $(anyenv root)/plugins/anyenv
 git clone https://github.com/znz/anyenv-git.git $(anyenv root)/plugins/anyenv-git
 
 mkdir -p "$(nodenv root)"/plugins
-git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
-git clone https://github.com/nodenv/node-build-update-defs.git "$(nodenv root)"/plugins/node-build
+git clone https://github.com/nodenv/node-build-update-defs.git "$(nodenv root)"/plugins/node-build-update-defs
 
-mkdir -p "$(plenv root)"/plugins
-git clone https://github.com/tokuhirom/Perl-Build.git "$(plenv root)"/plugins/perl-build
-
+cd "$(rbenv root)"
+src/configure && make -C src
 rbenv init
-mkdir -p "$(rbenv root)"/plugins
-git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
 ```
 
 ### neovim with python3の設定
@@ -117,8 +112,8 @@ mkdir -p "$(pyenv root)"/plugins
 git clone https://github.com/yyuu/pyenv-virtualenv $(pyenv root)/plugins/pyenv-virtualenv
 git clone https://github.com/yyuu/pyenv-ccache $(pyenv root)/plugins/pyenv-ccache
 git clone https://github.com/massongit/pyenv-pip-update $(pyenv root)/plugins/pyenv-pip-update
-pyenv install 3.9.1
-pyenv virtualenv 3.9.1 neovim-3
+pyenv install 3.9.6
+pyenv virtualenv 3.9.6 neovim-3
 pyenv shell neovim-3
 pip3 install neovim pynvim
 ```
