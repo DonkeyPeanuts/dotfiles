@@ -66,3 +66,4 @@ source "$DOTFILE_DIR/scripts/setup"
   - .config/bat/config
   - .local/opt/tmux-copycat
   - .local/opt/anyenv
+  - .local/opt/anyenv-install
