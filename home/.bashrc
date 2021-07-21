@@ -40,12 +40,26 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias l='ls -tF --color=auto'
-alias ls='ls -tF --color=auto'
-alias ll='ls -ltF --color=auto'
-alias la='ls -atF --color=auto'
-alias lla='ls -altF --color=auto'
-alias lld='ls -altFd --color=auto'
+
+case "${OSTYPE}" in
+darwin*)
+  alias l='ls -tF -G'
+  alias ls='ls -tF -G'
+  alias ll='ls -ltF -G'
+  alias la='ls -atF -G'
+  alias lla='ls -altF -G'
+  alias lld='ls -altFd -G'
+  ;;
+linux*)
+  alias l='ls -tF --color=auto'
+  alias ls='ls -tF --color=auto'
+  alias ll='ls -ltF --color=auto'
+  alias la='ls -atF --color=auto'
+  alias lla='ls -altF --color=auto'
+  alias lld='ls -altFd --color=auto'
+  ;;
+esac
+
 alias df='df -h'
 alias sc='screen -D -U -RR'
 alias hn='hostname'
