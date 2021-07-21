@@ -12,10 +12,10 @@
 	url = https://github.com/anyenv/anyenv.git
 [submodule "home/.local/opt/anyenv-install"]
 	path = home/.local/opt/anyenv-install
-	url = git@github.com:anyenv/anyenv-install.git
+	url = https://github.com/anyenv/anyenv-install.git
 [submodule "home/.local/share/vim/molokai"]
 	path = home/.local/share/vim/molokai
-	url = git@github.com:tomasr/molokai.git
+	url = https://github.com/tomasr/molokai.git
 [submodule "home/.local/share/vim/gruvbox"]
 	path = home/.local/share/vim/gruvbox
-	url = git@github.com:morhetz/gruvbox.git
+	url = https://github.com/morhetz/gruvbox.git
