@@ -126,15 +126,30 @@ export GPG_TTY="$(tty)"
 export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 
 # @TODO Change according to your environment
-export GO_ROOT=/usr/local/go
-export PATH=$PATH:$GOROOT/bin
+export ANYENV_ROOT=$HOME/.local/opt/anyenv
+export PATH=$ANYENV_ROOT/bin:$PATH
+export ANYENV_DEFINITION_ROOT=$ANYENV_ROOT-install
 
-export RBENV_ROOT=$HOME/.local/share/opt/rbenv/
-export PATH=$PATH:$RBENV_ROOT/bin
+export GOENV_ROOT=$HOME/.local/opt/anyenv/envs/goenv
+export PATH=$GOENV_ROOT/bin:$PATH
+eval "$(goenv init -)"
+export PATH=$GOROOT/bin:$PATH
+export PATH=$PATH:$GOPATH/bin
 
-export PYENV_ROOT=$HOME/.local/share/opt/pyenv
+export NODENV_ROOT=$HOME/.local/opt/anyenv/envs/nodenv
+export PATH=$NODENV_ROOT/bin:$PATH
+eval "$(nodenv init -)"
+
+export PLENV_ROOT=$HOME/.local/opt/anyenv/envs/plenv
+export PATH=$PATH:$PLENV_ROOT/bin
+eval "$(plenv init -)"
+
+export PYENV_ROOT=$HOME/.local/opt/anyenv/envs/pyenv
 export PATH=$PATH:$PYENV_ROOT/bin
 eval "$(pyenv init -)"
+
+export RBENV_ROOT=$HOME/.local/opt/anyenv/envs/rbenv/
+export PATH=$PATH:$RBENV_ROOT/bin
 
 # @TODO Change according to your environment
 [ -f $(brew --prefix)/etc/profile.d/bash-completion.bash ] && source $(brew --prefix)/etc/profile.d/bash_completion.bash
