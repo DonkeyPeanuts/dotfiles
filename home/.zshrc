@@ -277,7 +277,7 @@ eval "$(plenv init -)"
 
 export PYENV_ROOT=$HOME/.local/opt/anyenv/envs/pyenv
 export PATH=$PATH:$PYENV_ROOT/bin
-eval "$(pyenv init -)"
+eval "$(pyenv init --path)"
 
 export RBENV_ROOT=$HOME/.local/opt/anyenv/envs/rbenv/
 export PATH=$PATH:$RBENV_ROOT/bin
