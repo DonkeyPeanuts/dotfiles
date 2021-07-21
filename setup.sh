@@ -37,7 +37,7 @@ source "$DOTFILE_DIR/scripts/setup"
 
 @install Install Vim Config
   - .vim
-  - .vim/colors
+  - shell: mkdir -p ~/.vim/colors
   - shell: ln -s ~/.local/share/vim/molokai/colors/molokai.vim ~/.vim/colors/molokai.vim
   - shell: ln -s ~/.local/share/vim/gruvbox/colors/gruvbox.vim ~/.vim/colors/gruvbox.vim
   - .config/nvim
