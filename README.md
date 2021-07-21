@@ -96,6 +96,7 @@ git clone https://github.com/znz/anyenv-update.git $(anyenv root)/plugins/anyenv
 git clone https://github.com/znz/anyenv-git.git $(anyenv root)/plugins/anyenv-git
 
 mkdir -p "$(nodenv root)"/plugins
+git clone https://github.com/nodenv/nodenv-update.git "$(nodenv root)"/plugins/nodenv-update
 git clone https://github.com/nodenv/node-build-update-defs.git "$(nodenv root)"/plugins/node-build-update-defs
 
 cd "$(rbenv root)"
