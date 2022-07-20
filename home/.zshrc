@@ -282,12 +282,29 @@ eval "$(pyenv init --path)"
 export RBENV_ROOT=$HOME/.local/opt/anyenv/envs/rbenv/
 export PATH=$PATH:$RBENV_ROOT/bin
 
+export PHPENV_ROOT=$HOME/.local/opt/anyenv/envs/phpenv
+export PATH=$PATH:$PHPENV_ROOT/bin
+eval "$(phpenv init -)"
+
+agent="$HOME/.ssh/agent"
+if [ -S "$SSH_AUTH_SOCK" ]; then
+    case $SSH_AUTH_SOCK in
+    /private/tmp/*/agent.[0-9]*)
+        ln -snf "$SSH_AUTH_SOCK" $agent && export SSH_AUTH_SOCK=$agent
+    esac
+elif [ -S $agent ]; then
+    export SSH_AUTH_SOCK=$agent
+else
+    echo "no ssh-agent"
+fi
+
 if [ -f ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
   source ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
 fi
 
-[ -f ~/.local/share/git/git-completion.zsh ] && source ~/.local/share/git/git-completion.zsh
+[ -f ~/.local/share/git/git-prompt.sh ] && source ~/.local/share/git/git-prompt.sh
+zstyle ':completion:*:*:git:*' script ~/.local/share/git/git-completion.bash
 
 # @TODO Change according to your environment
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
