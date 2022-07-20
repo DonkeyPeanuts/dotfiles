@@ -89,6 +89,7 @@ anyenv install pyenv
 anyenv install nodenv
 anyenv install goenv
 anyenv install plenv
+anyenv install phpenv
 exec $SHELL -l
 
 mkdir -p $(anyenv root)/plugins
